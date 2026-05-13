@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Frequencies - gutenburg-final-project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background-color: whitesmoke;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+        }
+        .subtitle {
+            text-align: center;
+            color: gray;
+            font-size: 14px;
+        }
+        .freq-box {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px lightgray;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th {
+            background-color: steelblue;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid gainsboro;
+            color: black;
+        }
+        tr:hover {
+            background-color: lavender;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: steelblue;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Top 10 Words in "{{ title }}"</h1>
+
+    {% if from_database %}
+        <p class="subtitle">Loaded from database</p>
+    {% else %}
+        <p class="subtitle">Freshly analyzed and saved to database</p>
+    {% endif %}
+
+    <div class="freq-box">
+
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        {% if word_frequencies %}
+            <table>
+                <tr>
+                    <th>Rank</th>
+                    <th>Word</th>
+                    <th>Frequency</th>
+                </tr>
+                {% for entry in word_frequencies %}
+                    <tr>
+                        <td>{{ entry.rank }}</td>
+                        <td>{{ entry.word }}</td>
+                        <td>{{ entry.frequency }} times</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
+    </div>
+
+    <a class="back-link" href="/">Search Another Book</a>
+</body>
+</html>

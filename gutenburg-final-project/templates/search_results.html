@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - gutenburg-final-project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background-color: whitesmoke;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+        }
+        .results-box {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px lightgray;
+        }
+        .book-item {
+            padding: 15px;
+            border-bottom: 1px solid gainsboro;
+        }
+        .book-item:last-child {
+            border-bottom: none;
+        }
+        .book-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: black;
+        }
+        .book-authors {
+            color: gray;
+            font-size: 14px;
+        }
+        button {
+            margin-top: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            background-color: steelblue;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkslateblue;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: steelblue;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            padding: 20px;
+        }
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Search Results</h1>
+
+    <div class="results-box">
+
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        {% if no_results %}
+            <p class="no-results">No books found for "{{ title }}".</p>
+        {% endif %}
+
+        {% if books %}
+            <p>Found matches for "{{ title }}":</p>
+
+            {% for book in books %}
+                <div class="book-item">
+                    <div class="book-title">{{ book.number }}. {{ book.title }}</div>
+                    <div class="book-authors">by {{ book.authors }}</div>
+                    <form method="post" action="/analyze/">
+                        {% csrf_token %}
+                        <input type="hidden" name="book_title" value="{{ book.title }}">
+                        <input type="hidden" name="book_url" value="{{ book.url }}">
+                        <button type="submit">Analyze This Book</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+
+    <a class="back-link" href="/">Back to Search</a>
+
+    <script>
+        /* Show a loading message when the user clicks Analyze */
+        var forms = document.querySelectorAll("form");
+        for (var i = 0; i < forms.length; i++) {
+            forms[i].addEventListener("submit", function() {
+                var btn = this.querySelector("button");
+                btn.textContent = "Downloading and analyzing... please wait";
+                btn.disabled = true;
+                btn.style.backgroundColor = "gray";
+            });
+        }
+    </script>
+</body>
+</html>

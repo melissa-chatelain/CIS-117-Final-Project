@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gutenburg-final-project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background-color: whitesmoke;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+        }
+        h2 {
+            text-align: center;
+            color: dimgray;
+        }
+        .search-box {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px lightgray;
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid silver;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: steelblue;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkslateblue;
+        }
+    </style>
+</head>
+<body>
+    <h1>gutenburg-final-project</h1>
+    <h2>Project Gutenberg Book Analyzer</h2>
+
+    <div class="search-box">
+        <p>Search for a book by title:</p>
+        <form method="post" action="/search/">
+            {% csrf_token %}
+            <input type="text" name="title" placeholder="Enter book title..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <script>
+        /* Show a loading message when the user searches */
+        var form = document.querySelector("form");
+        form.addEventListener("submit", function() {
+            var btn = this.querySelector("button");
+            btn.textContent = "Searching... please wait";
+            btn.disabled = true;
+            btn.style.backgroundColor = "gray";
+        });
+    </script>
+</body>
+</html>
